@@ -70,8 +70,15 @@
             </select>
           </div>
           <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1">อายุ (ปี)</label>
-            <input type="number" name="age" required class="w-full rounded-lg border-slate-200 p-2.5 text-sm bg-slate-50 border focus:ring-2 focus:ring-red-500 focus:outline-none">
+            <label class="block text-sm font-medium text-slate-700 mb-1">ช่วงอายุ</label>
+            <select name="age" required class="w-full rounded-lg border-slate-200 p-2.5 text-sm bg-slate-50 border focus:ring-2 focus:ring-red-500 focus:outline-none">
+              <option value="">-- เลือกช่วงอายุ --</option>
+              <option value="ต่ำกว่า 15 ปี">ต่ำกว่า 15 ปี</option>
+              <option value="15 - 25 ปี">15 - 25 ปี</option>
+              <option value="26 - 35 ปี">26 - 35 ปี</option>
+              <option value="36 - 45 ปี">36 - 45 ปี</option>
+              <option value="มากกว่า 45 ปี">มากกว่า 45 ปี</option>
+            </select>
           </div>
         </div>
       </div>
@@ -142,7 +149,7 @@
       <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-4">
         <h2 class="text-lg font-bold text-slate-800 border-b pb-2 flex items-center gap-2">
           <span class="flex items-center justify-center w-6 h-6 rounded-full bg-red-100 text-red-600 text-xs font-bold">3</span>
-          ข้อเสนอแนะเพิ่มเติม <span class="text-red-500 text-sm"></span>
+          ข้อเสนอแนะเพิ่มเติม <span class="text-red-500 text-sm">* (จำเป็นต้องกรอก)</span>
         </h2>
         <textarea name="suggestion" required rows="3" placeholder="พิมพ์ข้อเสนอแนะของคุณที่นี่..." class="w-full rounded-lg border-slate-200 p-2.5 text-sm bg-slate-50 border focus:ring-2 focus:ring-red-500 focus:outline-none"></textarea>
       </div>
@@ -152,6 +159,27 @@
         <span>ส่งแบบประเมิน</span>
       </button>
     </form>
+  </div>
+
+  <!-- Popup สำเร็จ (Modal Success) -->
+  <div id="successModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl space-y-5 animate-bounce-once">
+      <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto text-emerald-600">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-10 h-10">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+        </svg>
+      </div>
+      <div>
+        <h3 class="text-2xl font-bold text-slate-800 mb-1">บันทึกข้อมูลเรียบร้อย!</h3>
+        <p class="text-slate-500 text-sm">ขอบคุณสำหรับความคิดเห็นและการสละเวลาประเมินในครั้งนี้ครับ</p>
+      </div>
+      <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs text-slate-600 font-medium">
+        ✨ คุณสามารถปิดหน้านี้ได้เลยครับ ✨
+      </div>
+      <button onclick="location.reload()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-2.5 rounded-xl text-sm transition">
+        ประเมินอีกครั้ง
+      </button>
+    </div>
   </div>
 
   <script>
@@ -223,8 +251,8 @@
       .then(res => res.json())
       .then(res => {
         if (res.result === 'success') {
-          alert('ขอบคุณสำหรับความคิดเห็น! ระบบบันทึกแบบประเมินเรียบร้อยแล้ว');
-          location.reload();
+          // แสดง Modal Popup เมื่อส่งข้อมูลสำเร็จ
+          document.getElementById('successModal').classList.remove('hidden');
         } else {
           alert('เกิดข้อผิดพลาด: ' + res.error);
           submitBtn.disabled = false;
